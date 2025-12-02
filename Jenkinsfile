@@ -14,12 +14,7 @@ pipeline {
                 // Add your test commands here
             }
         }
-        stage('dockerlogin') {
-            steps {
-                dockerlogin registry.example.com -u $DOCKER_USER -p $DOCKER_PASSWORD
-                
-            }
-        }
+       
         stage('Deploy') {
             steps {
                 echo 'Deploying...'
