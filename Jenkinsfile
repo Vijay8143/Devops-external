@@ -16,6 +16,7 @@ pipeline {
                 }
             }
         }
+        // ...existing code...
         stage('Push to Docker Hub') {
             steps {
                 script {
@@ -29,11 +30,7 @@ pipeline {
         }
     }
 
-
     post {
-// ...existing code...
-    post {
-       
         success {
             echo 'Pipeline completed successfully!'
         }
@@ -41,5 +38,4 @@ pipeline {
             echo 'Pipeline failed.'
         }
     }
-}
 }
