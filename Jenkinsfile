@@ -21,16 +21,17 @@ pipeline {
                 script {
                     echo "Pushing Docker image to Docker Hub..."
                     
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        bat "echo ${env.DOCKER_PASS} | docker login -u ${env.DOCKER_USER} --password-stdin"
-                        bat "docker push vijayreddygoli811/my-app:${env.BUILD_NUMBER}"
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_CREDENTIALS_ID) {
+                        docker.image("${env.DOCKER_USERNAME}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}").push()
                     }
                 }
             }
         }
-        
     }
 
+
+    post {
+// ...existing code...
     post {
        
         success {
@@ -40,4 +41,5 @@ pipeline {
             echo 'Pipeline failed.'
         }
     }
+}
 }
