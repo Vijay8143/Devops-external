@@ -13,7 +13,7 @@ pipeline {
                 script {
                     echo "Building Docker image..."
                     
-                    dockerImage = docker.build("${env.DOCKER_USERNAME}/${env.IMAGE_NAME}:latest")
+                    
                 }
             }
         }
@@ -22,9 +22,7 @@ pipeline {
                 script {
                     echo "Pushing Docker image to Docker Hub..."
                     
-                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_CREDENTIALS_ID) {
-                        dockerImage.push()
-                    }
+                    
                 }
             }
         }
