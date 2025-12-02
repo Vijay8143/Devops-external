@@ -16,30 +16,23 @@ pipeline {
                 }
             }
         }
-        
         stage('Push to Docker Hub') {
             steps {
                 script {
                     echo "Pushing Docker image to Docker Hub..."
-                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_CREDENTIALS_ID) {
-                        
-                        docker.image("${env.DOCKER_USERNAME}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}").push()
-
-                        
-                        docker.image("${env.DOCKER_USERNAME}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}").push('latest')
+                    
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        bat "echo ${env.DOCKER_PASS} | docker login -u ${env.DOCKER_USER} --password-stdin"
+                        bat "docker push vijayreddygoli811/my-app:${env.BUILD_NUMBER}"
                     }
                 }
             }
         }
+        
     }
 
     post {
-        always {
-            // Clean up the local Docker images on the Jenkins agent to save space
-            echo "Cleaning up local Docker images..."
-            sh "docker rmi ${env.DOCKER_USERNAME}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}"
-            sh "docker rmi ${env.DOCKER_USERNAME}/${env.IMAGE_NAME}:latest"
-        }
+       
         success {
             echo 'Pipeline completed successfully!'
         }
