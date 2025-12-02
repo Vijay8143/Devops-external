@@ -13,7 +13,7 @@ pipeline {
                 script {
                     echo "Building Docker image..."
                     
-                    dockerImage = docker.build("${env.DOCKER_USERNAME}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}")
+                    dockerImage = docker.build("${env.DOCKER_USERNAME}/${env.IMAGE_NAME}:latest")
                 }
             }
         }
