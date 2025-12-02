@@ -1,31 +1,20 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_USERNAME = 'vijayreddygoli811'
-        IMAGE_NAME = 'my-app'
-        DOCKER_CREDENTIALS_ID = 'dockerhub'
-    }
-
     stages {
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                script {
-                    echo "Building Docker image..."
-                    
-                    dockerImage = docker.build("${env.DOCKER_USERNAME}/${env.IMAGE_NAME}:${env.BUILD_NUMBER}")
-                }
+                echo 'Building...'
             }
         }
-        stage('Push Docker Image') {
+        stage('Test') {
             steps {
-                script {
-                    echo "Pushing Docker image to Docker Hub..."
-                    
-                    docker.withRegistry('https://index.docker.io/v1/', env.DOCKER_CREDENTIALS_ID) {
-                        dockerImage.push()
-                    }
-                }
+                echo 'Testing...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying...'
             }
         }
     }
